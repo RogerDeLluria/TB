@@ -38,12 +38,12 @@ type Data struct {
 
 func handler(req events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
 
-	if req.HTTPMethod != "POST" {
+	/*if req.HTTPMethod != "POST" {
 		return events.APIGatewayProxyResponse{
 			StatusCode: 200,
 			Body:       "Hello There...",
 		}, nil
-	}
+	}*/
 
 	var err error
 
