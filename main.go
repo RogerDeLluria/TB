@@ -14,13 +14,15 @@ import (
 
 var TELEGRAM_BOT_TOKEN string
 
-var q[0] = "Quina edat tens?"
+var q [5]string
+q[0] = "Quina edat tens?"
 q[1] = "Ets estudiant? De què?"
 q[2] = "En quina universitat estudies?" 
 q[3] = "A quina regió vius?"
 q[4] = "Dintre de la teva universitat, quin és el teu campus?"
 
-var m[0] = "Hola! Escriu /start per començar"
+var m [3]string
+m[0] = "Hola! Escriu /start per començar"
 m[1] = "El teu canal de Telegram és"
 m[2] = "No sé que vols dir. Per tornar a començar, escriu /start"
 
