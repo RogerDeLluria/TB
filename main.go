@@ -14,6 +14,16 @@ import (
 
 var TELEGRAM_BOT_TOKEN string
 
+var q[0] = "Quina edat tens?"
+q[1] = "Ets estudiant? De què?"
+q[2] = "En quina universitat estudies?" 
+q[3] = "A quina regió vius?"
+q[4] = "Dintre de la teva universitat, quin és el teu campus?"
+
+var m[0] = "Hola! Escriu /start per començar"
+m[1] = "El teu canal de Telegram és"
+m[2] = "No sé que vols dir. Per tornar a començar, escriu /start"
+
 type Data struct {
 	UpdateID int `json:"update_id"`
 	Message  struct {
@@ -68,7 +78,7 @@ func handler(req events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse,
 	}
 
 	responseData := map[string]interface{}{
-		"text":    data.Message.Text,
+		"text":    q[0],
 		"chat_id": data.Message.Chat.ID,
 	}
 
