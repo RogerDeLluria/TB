@@ -1,22 +1,27 @@
 {
   "name": "telegram-echo-bot-master",
   "version": "1.0.0",
-  "description": "Xat",
-  "main": "functions/xat.js",
+  "description": "This is a simple telegram echo bot built using golang and Netlify Functions.",
+  "main": "index.js",
+  "dependencies": {
+    "netlify-lambda": "^1.6.3",
+    "telegraf": "^3.33.3"
+  },
+  "devDependencies": {},
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start:lambda": "netlify-lambda serve src/lambda",
+    "build:lambda": "netlify-lambda build src/lambda"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/RogerDeLluria/TB.git"
   },
+  "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/RogerDeLluria/TB/issues"
   },
-  "homepage": "https://github.com/RogerDeLluria/TB#readme",
-  "dependencies": {
-    "telegraf": "^3.33.3"
-  }
+  "homepage": "https://github.com/RogerDeLluria/TB#readme"
 }
