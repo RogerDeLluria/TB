@@ -1,0 +1,22 @@
+{
+  "name": "telegram-echo-bot-master",
+  "version": "1.0.0",
+  "description": "Xat",
+  "main": "functions/xat.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RogerDeLluria/TB.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/RogerDeLluria/TB/issues"
+  },
+  "homepage": "https://github.com/RogerDeLluria/TB#readme",
+  "dependencies": {
+    "telegraf": "^3.33.3"
+  }
+}
