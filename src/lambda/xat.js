@@ -8,6 +8,6 @@ exports.handler = function(event, context, callback) {
     app.handleUpdate(tmp); // make Telegraf process that data
     return callback(null, { // return something for webhook, so it doesn't try to send same stuff again
       statusCode: 200,
-      body: '',
+      body: process.env.TELEGRAM_BOT_TOKEN,
     });
 }
