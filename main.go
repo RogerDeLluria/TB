@@ -10,123 +10,34 @@ import (
 
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/aws/aws-lambda-go/lambda"
+	"github.com/go-telegram-bot-api/telegram-bot-api"
 )
 
 var TELEGRAM_BOT_TOKEN string
 
-
-
-type Data struct {
-	UpdateID int `json:"update_id"`
-	Message  struct {
-		MessageID int `json:"message_id"`
-		From      struct {
-			ID           int    `json:"id"`
-			IsBot        bool   `json:"is_bot"`
-			FirstName    string `json:"first_name"`
-			Username     string `json:"username"`
-			LanguageCode string `json:"language_code"`
-		} `json:"from"`
-		Chat struct {
-			ID        int    `json:"id"`
-			FirstName string `json:"first_name"`
-			Username  string `json:"username"`
-			Type      string `json:"type"`
-		} `json:"chat"`
-		Date int    `json:"date"`
-		Text string `json:"text"`
-	} `json:"message"`
-}
-
 func handler(req events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
-
-	var q [5]string
-	q[0] = "Quina edat tens?"
-	q[1] = "Ets estudiant? De què?"
-	q[2] = "En quina universitat estudies?" 
-	q[3] = "A quina regió vius?"
-	q[4] = "Dintre de la teva universitat, quin és el teu campus?"
-
-	var m [3]string
-	m[0] = "Hola! Escriu /start per començar"
-	m[1] = "El teu canal de Telegram és"
-	m[2] = "No sé que vols dir. Per tornar a començar, escriu /start"
-
-	/*if req.HTTPMethod != "POST" {
-		return events.APIGatewayProxyResponse{
-			StatusCode: 200,
-			Body:       "Hello There...",
-		}, nil
-	}*/
-
-	var err error
-
-	data := Data{}
-	
-	log.Println(req)
-
-	if err = json.Unmarshal([]byte(req.Body), &data); err != nil {
-
-		log.Println(err)
-
-		return events.APIGatewayProxyResponse{
-			StatusCode: 503,
-		}, nil
-
+	bot, err := tgbotapi.NewBotAPI(TELEGRAM_BOT_TOKEN)
+	if err != nil {
+		log.Fatal(err)
 	}
 
-	if strings.Contains(data.Message.Text, "start") {
-		return events.APIGatewayProxyResponse{
-			StatusCode: 204,
-		}, nil
+	bot.Debug = true
+
+	log.Printf("Authorized on account %s", bot.Self.UserName)
+
+	info, err := bot.GetWebhookInfo()
+	if err != nil {
+		log.Fatal(err)
 	}
-
-	responseData := map[string]interface{}{
-		"text":    q[0],
-		"chat_id": data.Message.Chat.ID,
+	if info.LastErrorDate != 0 {
+		log.Printf("Telegram callback failed: %s", info.LastErrorMessage)
 	}
+	updates := bot.ListenForWebhook("/" + bot.Token)
+	go http.ListenAndServeTLS("0.0.0.0:8443", "cert.pem", "key.pem", nil)
 
-	var responseDataJSON []byte
-
-	if responseDataJSON, err = json.Marshal(responseData); err != nil {
-
-		log.Println(err)
-
-		return events.APIGatewayProxyResponse{
-			StatusCode: 503,
-		}, nil
-
+	for update := range updates {
+		log.Printf("%+v\n", update)
 	}
-
-	if request, err := http.NewRequest("POST", fmt.Sprintf("https://api.telegram.org/bot%s/sendMessage", TELEGRAM_BOT_TOKEN), bytes.NewReader(responseDataJSON)); err != nil {
-
-		log.Println(err)
-
-		return events.APIGatewayProxyResponse{
-			StatusCode: 503,
-		}, nil
-
-	} else {
-
-		request.Header.Set("Content-Type", "application/json")
-
-		client := &http.Client{}
-
-		if _, err = client.Do(request); err != nil {
-
-			log.Println(err)
-
-			return events.APIGatewayProxyResponse{
-				StatusCode: 503,
-			}, nil
-
-		}
-
-	}
-
-	return events.APIGatewayProxyResponse{
-		StatusCode: 204,
-	}, nil
 
 }
 
